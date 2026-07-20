@@ -110,3 +110,50 @@ INSERT INTO produit_membre (id_produit, id_membre, prix_vente, quantite_dispo, d
 (12, 10, 2000.00, 5, '2026-07-22');
 
 ALTER TABLE produit_membre ADD COLUMN photo_offre VARCHAR(255) DEFAULT NULL;
+
+-- 🛒 MISE À JOUR CORRECTE DES PHOTOS (Basée sur tes ID réels)
+
+-- id_produit 1 : minesao.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'minesao.jpeg' WHERE `id_produit` = 1;
+
+-- id_produit 2 : Riz_Cantonnais.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Riz_Cantonnais.jpeg' WHERE `id_produit` = 2;
+
+-- id_produit 3 : misao_legumes.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'misao_legumes.jpeg' WHERE `id_produit` = 3;
+
+-- id_produit 4 : burger.webp
+UPDATE `produit_membre` SET `photo_offre` = 'burger.webp' WHERE `id_produit` = 4;
+
+-- id_produit 5 : jus_mangue.jpg
+UPDATE `produit_membre` SET `photo_offre` = 'jus_mangue.jpg' WHERE `id_produit` = 5;
+
+-- id_produit 6 : Ice_Tea.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Ice_Tea.jpeg' WHERE `id_produit` = 6;
+
+-- id_produit 7 : Café_Glacé.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Café_Glacé.jpeg' WHERE `id_produit` = 7;
+
+-- id_produit 8 : Sambos_Boeuf.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Sambos_Boeuf.jpeg' WHERE `id_produit` = 8;
+
+-- id_produit 9 : Nems_Poulet.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Nems_Poulet.jpeg' WHERE `id_produit` = 9;
+
+-- id_produit 10 : Frites.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Frites.jpeg' WHERE `id_produit` = 10;
+
+-- id_produit 11 : Sandwich.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Sandwich.jpeg' WHERE `id_produit` = 11;
+
+-- id_produit 12 : Muffin.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Muffin.jpeg' WHERE `id_produit` = 12;
+
+-- id_produit 13 : Salade_de_Fruits.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Salade_de_Fruits.jpeg' WHERE `id_produit` = 13;
+
+-- id_produit 14 : Crêpe_au_Nutella.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Crêpe_au_Nutella.jpeg' WHERE `id_produit` = 14;
+
+-- id_produit 15 : Cookie.jpeg
+UPDATE `produit_membre` SET `photo_offre` = 'Cookie.jpeg' WHERE `id_produit` = 15;
