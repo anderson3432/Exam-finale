@@ -108,3 +108,5 @@ INSERT INTO produit_membre (id_produit, id_membre, prix_vente, quantite_dispo, d
 (5, 8, 2500.00, 8, '2026-07-22'),  
 (8, 9, 1400.00, 10, '2026-07-22'), 
 (12, 10, 2000.00, 5, '2026-07-22');
+
+ALTER TABLE produit_membre ADD COLUMN photo_offre VARCHAR(255) DEFAULT NULL;

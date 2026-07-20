@@ -16,34 +16,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_vendre'])) {
     $quantite = intval($_POST['quantite']);
     $date_dispo = $_POST['date_dispo'];
     $id_membre = $_SESSION['id_membre'];
+    
+    $nom_photo = null;
+
+    // 🌟 TRAITEMENT DU TÉLÉVERSEMENT DE LA PHOTO 🌟
+    if (isset($_FILES['photo_plat']) && $_FILES['photo_plat']['error'] === 0) {
+        $dossier_destination = '../images/';
+        
+        if (!is_dir($dossier_destination)) {
+            mkdir($dossier_destination, 0777, true);
+        }
+
+        $extension = pathinfo($_FILES['photo_plat']['name'], PATHINFO_EXTENSION);
+        // Création d'un nom unique basé sur le timestamp pour éviter les écrasements
+        $nom_photo = 'offre_' . time() . '_' . rand(1000, 9999) . '.' . $extension;
+        $chemin_complet = $dossier_destination . $nom_photo;
+
+        if (!move_uploaded_file($_FILES['photo_plat']['tmp_name'], $chemin_complet)) {
+            $nom_photo = null; 
+        }
+    }
 
     if ($id_produit > 0 && $prix_vente > 0 && $quantite > 0 && !empty($date_dispo)) {
-        $insertion_reussie = mettre_en_vente($id_produit, $id_membre, $prix_vente, $quantite, $date_dispo);
-
+        $insertion_reussie = mettre_en_vente($id_produit, $id_membre, $prix_vente, $quantite, $date_dispo, $nom_photo);
+        
         if ($insertion_reussie) {
-            $message_succes = "Votre produit a bien été mis en vente ! Il est maintenant visible sur l'accueil.";
+            $message_succes = "Votre plat a bien été mis en vente avec sa photo !";
         } else {
-            $message_erreur = "Erreur lors de la mise en vente du produit.";
+            $message_erreur = "Erreur lors de la mise en vente.";
         }
     } else {
-        $message_erreur = "Veuillez remplir correctement tous les champs obligatoires.";
+        $message_erreur = "Veuillez remplir correctement tous les champs requis.";
     }
 }
 
-$catalogue = get_catalogue_produits();
+$sql_catalogue = "SELECT * FROM produit ORDER BY nom ASC";
+$catalogue = get_all_lines($sql_catalogue);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITSNACKS - Vendre un produit</title>
+    <title>ITSNACKS - Vendre</title>
     <link rel="stylesheet" href="../Theme/Css/style.css">
     <link rel="stylesheet" href="../Theme/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../Theme/bootstrap/font/bootstrap-icons.css">
 </head>
-
 <body class="bg-light">
 
     <nav class="navbar navbar-app navbar-expand-lg mb-4 shadow-sm">
@@ -65,74 +84,57 @@ $catalogue = get_catalogue_produits();
 
     <div class="container">
         <?php if (!empty($message_succes)): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle-fill"></i><?= $message_succes ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
+            <div class="alert alert-success alert-dismissible fade show"><i class="bi bi-check-circle-fill"></i> <?= $message_succes ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
         <?php endif; ?>
         <?php if (!empty($message_erreur)): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle-fill"></i><?= $message_erreur ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
+            <div class="alert alert-danger alert-dismissible fade show"><i class="bi bi-exclamation-triangle-fill"></i> <?= $message_erreur ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
         <?php endif; ?>
 
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card card-app p-4 mt-2">
-                    <h3 class="fw-bold mb-1"><i class="bi bi-plus-circle section-icon"></i>Proposer un produit</h3>
-                    <p class="text-muted small mb-4">Remplissez ce formulaire pour publier votre offre sur la plateforme.</p>
-
-                    <form action="vendre.php" method="POST">
+            <div class="col-md-6">
+                <div class="card card-app shadow-sm p-4">
+                    <h3 class="fw-bold mb-3"><i class="bi bi-plus-circle"></i> Mettre un plat en vente</h3>
+                    
+                    <form action="vendre.php" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="action_vendre" value="1">
-
+                        
                         <div class="mb-3">
-                            <label for="id_produit" class="form-label"><i class="bi bi-list-ul"></i> Choisir un produit dans le catalogue</label>
+                            <label for="id_produit" class="form-label fw-bold">Choisir le produit</label>
                             <select name="id_produit" id="id_produit" class="form-select" required>
-                                <option value="" disabled selected>-- Sélectionnez votre produit --</option>
+                                <option value="" disabled selected>-- Sélectionner --</option>
                                 <?php foreach ($catalogue as $item): ?>
-                                    <option value="<?= $item['id_produit'] ?>">
-                                        <?= htmlspecialchars($item['nom']) ?> (Réf: <?= number_format($item['prix_reference'], 0, '.', ' ') ?> Ar)
-                                    </option>
+                                    <option value="<?= $item['id_produit'] ?>"><?= htmlspecialchars($item['nom']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="prix_vente" class="form-label"><i class="bi bi-cash-coin"></i> Votre prix de vente (Ar)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-currency-exchange"></i></span>
-                                    <input type="number" name="prix_vente" id="prix_vente" class="form-control" placeholder="Ex: 5500" min="1" step="100" required>
-                                </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label for="prix_vente" class="form-label fw-bold">Prix (Ar)</label>
+                                <input type="number" name="prix_vente" id="prix_vente" class="form-control" min="1" required>
                             </div>
+                            <div class="col-6">
+                                <label for="quantite" class="form-label fw-bold">Quantité</label>
+                                <input type="number" name="quantite" id="quantite" class="form-control" min="1" required>
+                            </div>
+                        </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label for="quantite" class="form-label"><i class="bi bi-box-seam"></i> Quantité à vendre</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-hash"></i></span>
-                                    <input type="number" name="quantite" id="quantite" class="form-control" placeholder="Ex: 5" min="1" required>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label for="date_dispo" class="form-label fw-bold">Date de disponibilité</label>
+                            <input type="date" name="date_dispo" id="date_dispo" class="form-control" value="<?= date('Y-m-d') ?>" required>
                         </div>
 
                         <div class="mb-4">
-                            <label for="date_dispo" class="form-label"><i class="bi bi-calendar3"></i> Date de disponibilité</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
-                                <input type="date" name="date_dispo" id="date_dispo" class="form-control" value="<?= date('Y-m-d') ?>" required>
-                            </div>
+                            <label for="photo_plat" class="form-label fw-bold">Photo du plat <span class="text-muted small fw-normal">(Optionnel)</span></label>
+                            <input type="file" name="photo_plat" id="photo_plat" class="form-control" accept="image/*">
+                            <small class="text-muted">La photo générique du catalogue sera utilisée si vous laissez ce champ vide.</small>
                         </div>
 
-                        <button type="submit" class="btn btn-app w-100">
-                            <i class="bi bi-send-check"></i>Publier mon offre
-                        </button>
+                        <button type="submit" class="btn btn-app w-100"><i class="bi bi-cloud-arrow-up"></i> Publier l'offre</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
-
 </html>

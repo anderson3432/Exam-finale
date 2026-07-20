@@ -48,9 +48,12 @@ function get_catalogue_produits() {
 }
 
 
-function mettre_en_vente($id_produit, $id_membre, $prix_vente, $quantite, $date_dispo) {
-    $sql = "INSERT INTO produit_membre (id_produit, id_membre, prix_vente, quantite_dispo, date_dispo) 
-            VALUES ($id_produit, $id_membre, $prix_vente, $quantite, '$date_dispo')";
+function mettre_en_vente($id_produit, $id_membre, $prix_vente, $quantite, $date_dispo, $photo_offre = null) {
+    $photo_value = $photo_offre ? "'$photo_offre'" : "NULL";
+    
+    $sql = "INSERT INTO produit_membre (id_produit, id_membre, prix_vente, quantite_dispo, date_dispo, photo_offre) 
+            VALUES ($id_produit, $id_membre, $prix_vente, $quantite, '$date_dispo', $photo_value)";
+            
     return mysqli_query(dbconnect(), $sql);
 }
 
@@ -62,7 +65,8 @@ function get_produits_en_vente() {
                 m.nom AS nom_vendeur, 
                 pm.prix_vente, 
                 pm.quantite_dispo, 
-                pm.date_dispo
+                pm.date_dispo,
+                pm.photo_offre
             FROM produit_membre pm
             JOIN produit p ON pm.id_produit = p.id_produit
             JOIN categorie c ON p.id_categorie = c.id_categorie
