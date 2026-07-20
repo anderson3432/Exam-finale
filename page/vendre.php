@@ -73,6 +73,7 @@ $catalogue = get_all_lines($sql_catalogue);
                     <li class="nav-item"><a class="nav-link" href="accueil.php"><i class="bi bi-house-door"></i>Accueil</a></li>
                     <li class="nav-item"><a class="nav-link active" href="vendre.php"><i class="bi bi-shop"></i>Vendre</a></li>
                     <li class="nav-item"><a class="nav-link" href="ventes.php"><i class="bi bi-graph-up-arrow"></i>Mes Ventes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="statistiques.php"><i class="bi bi-bar-chart-line"></i>Statistiques</a></li>
                 </ul>
                 <div class="navbar-text text-white me-3">
                     <i class="bi bi-person-circle"></i> Connecté : <strong><?= htmlspecialchars($_SESSION['nom']) ?></strong>

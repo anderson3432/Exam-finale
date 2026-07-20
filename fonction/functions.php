@@ -116,4 +116,52 @@ function get_ventes_by_membre($id_membre) {
     return get_all_lines($sql);
 }
 
+function get_ventes_par_categorie() {
+    $sql = "SELECT c.id_categorie, c.nom_categorie,
+                   SUM(v.quantite) AS total_quantite,
+                   SUM(v.quantite * pm.prix_vente) AS total_ca
+            FROM vente v
+            JOIN produit_membre pm ON v.id_produit_membre = pm.id_produit_membre
+            JOIN produit p ON pm.id_produit = p.id_produit
+            JOIN categorie c ON p.id_categorie = c.id_categorie
+            GROUP BY c.id_categorie, c.nom_categorie
+            ORDER BY total_ca DESC";
+    return get_all_lines($sql);
+}
+
+function get_ventes_par_produit($id_categorie) {
+    $sql = "SELECT p.id_produit, p.nom AS nom_produit,
+                   SUM(v.quantite) AS total_quantite,
+                   SUM(v.quantite * pm.prix_vente) AS total_ca
+            FROM vente v
+            JOIN produit_membre pm ON v.id_produit_membre = pm.id_produit_membre
+            JOIN produit p ON pm.id_produit = p.id_produit
+            WHERE p.id_categorie = $id_categorie
+            GROUP BY p.id_produit, p.nom
+            ORDER BY total_ca DESC";
+    return get_all_lines($sql);
+}
+
+function get_ventes_par_membre($id_produit) {
+    $sql = "SELECT m.id_membre, m.nom AS nom_membre,
+                   SUM(v.quantite) AS total_quantite,
+                   SUM(v.quantite * pm.prix_vente) AS total_ca
+            FROM vente v
+            JOIN produit_membre pm ON v.id_produit_membre = pm.id_produit_membre
+            JOIN membre m ON pm.id_membre = m.id_membre
+            WHERE pm.id_produit = $id_produit
+            GROUP BY m.id_membre, m.nom
+            ORDER BY total_ca DESC";
+    return get_all_lines($sql);
+}
+
+function get_categorie_by_id($id_categorie) {
+    $sql = "SELECT * FROM categorie WHERE id_categorie = $id_categorie";
+    return get_one_line($sql);
+}
+
+function get_produit_by_id($id_produit) {
+    $sql = "SELECT * FROM produit WHERE id_produit = $id_produit";
+    return get_one_line($sql);
+}
 ?>
