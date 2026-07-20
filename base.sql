@@ -1,8 +1,6 @@
--- ==========================================
--- SCRIPT DE CRÉATION DE LA BASE DE DONNÉES
--- Projet Final S2 - ITU (Juillet 2026)
--- ==========================================
 
+CREATE DATABASE produits;
+USE produits;
 -- Suppression des tables si elles existent déjà (ordre respectant les clés étrangères)
 DROP TABLE IF EXISTS vente;
 DROP TABLE IF EXISTS produit_membre;
