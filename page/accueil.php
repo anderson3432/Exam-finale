@@ -26,7 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_achat'])) {
     }
 }
 
-$produits = get_produits_en_vente();
+$id_categorie_filtre = isset($_GET['id_categorie']) ? intval($_GET['id_categorie']) : 0;
+$id_produit_filtre = isset($_GET['id_produit']) ? intval($_GET['id_produit']) : 0;
+
+$categories = get_categories();
+$catalogue_produits = get_catalogue_produits();
+
+$produits = get_produits_en_vente($id_categorie_filtre, $id_produit_filtre);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -81,6 +87,36 @@ $produits = get_produits_en_vente();
             </div>
         </div>
 
+        <div class="card card-app p-3 mb-4">
+            <form action="accueil.php" method="GET" class="row g-2 align-items-end">
+                <div class="col-md-5">
+                    <label for="id_categorie" class="form-label mb-1"><i class="bi bi-tag"></i> Catégorie</label>
+                    <select name="id_categorie" id="id_categorie" class="form-select">
+                        <option value="0">Toutes les catégories</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= $cat['id_categorie'] ?>" <?= ($id_categorie_filtre == $cat['id_categorie']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($cat['nom_categorie']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label for="id_produit" class="form-label mb-1"><i class="bi bi-box-seam"></i> Produit</label>
+                    <select name="id_produit" id="id_produit" class="form-select">
+                        <option value="0">Tous les produits</option>
+                        <?php foreach ($catalogue_produits as $prod): ?>
+                            <option value="<?= $prod['id_produit'] ?>" <?= ($id_produit_filtre == $prod['id_produit']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($prod['nom']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button type="submit" class="btn btn-app"><i class="bi bi-funnel"></i> Filtrer</button>
+                </div>
+            </form>
+        </div>
+
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php if (empty($produits)): ?>
                 <div class="col-12 text-center my-5">
@@ -92,20 +128,19 @@ $produits = get_produits_en_vente();
                 <?php foreach ($produits as $p): ?>
                     <div class="col">
                         <div class="card card-app h-100 shadow-sm overflow-hidden">
-                            
-                            <!-- 🌟 ZONE IMAGE PROPRE ET SIMPLIFIÉE (SANS DEVINETTE ET SANS DOUBLONS) 🌟 -->
+
                             <div style="height: 160px; overflow: hidden; background-color: #e9ecef;">
-                                <?php 
+                                <?php
                                 if (!empty($p['photo_offre'])) {
                                     $image_a_afficher = $p['photo_offre'];
                                 } else {
                                     $image_a_afficher = 'default_food.png';
                                 }
                                 ?>
-                                <img src="../images/<?= htmlspecialchars($image_a_afficher) ?>" 
-                                     class="w-100 h-100 object-fit-cover" 
-                                     alt="<?= htmlspecialchars($p['nom_produit']) ?>"
-                                     onerror="this.src='../images/default_food.png';">
+                                <img src="../images/<?= htmlspecialchars($image_a_afficher) ?>"
+                                    class="w-100 h-100 object-fit-cover"
+                                    alt="<?= htmlspecialchars($p['nom_produit']) ?>"
+                                    onerror="this.src='../images/default_food.png';">
                             </div>
 
                             <div class="card-body d-flex flex-column">

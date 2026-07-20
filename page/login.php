@@ -58,7 +58,7 @@ include_once("../fonction/functions.php");
                                 <label for="etu" class="form-label"><i class="bi bi-person-badge"></i> Numéro ETU</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-hash"></i></span>
-                                    <input type="text" id="etu" name="etu" class="form-control" placeholder="ETU****" required>
+                                    <input type="text" id="etu" name="etu" class="form-control" value="ETU0001" required>
                                 </div>
                             </div>
 

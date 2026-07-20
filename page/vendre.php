@@ -113,11 +113,11 @@ $catalogue = get_all_lines($sql_catalogue);
                         <div class="row mb-3">
                             <div class="col-6">
                                 <label for="prix_vente" class="form-label fw-bold">Prix (Ar)</label>
-                                <input type="number" name="prix_vente" id="prix_vente" class="form-control" min="1" required>
+                                <input type="number" name="prix_vente" id="prix_vente" class="form-control" min="1" required value="3000">
                             </div>
                             <div class="col-6">
                                 <label for="quantite" class="form-label fw-bold">Quantité</label>
-                                <input type="number" name="quantite" id="quantite" class="form-control" min="1" required>
+                                <input type="number" name="quantite" id="quantite" class="form-control" min="1" required value="2">
                             </div>
                         </div>
 

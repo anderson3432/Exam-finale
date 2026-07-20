@@ -1,6 +1,6 @@
 
-CREATE DATABASE produits;
-USE produits;
+CREATE DATABASE ITsnacks;
+USE ITsnacks;
 
 DROP TABLE IF EXISTS vente;
 DROP TABLE IF EXISTS produit_membre;
@@ -109,6 +109,18 @@ INSERT INTO produit_membre (id_produit, id_membre, prix_vente, quantite_dispo, d
 (8, 9, 1400.00, 10, '2026-07-22'), 
 (12, 10, 2000.00, 5, '2026-07-22');
 
+INSERT INTO vente (id_vente, date, heure, id_produit_membre, quantite) VALUES
+(6,  '2026-07-20', '09:14:52', 12, 1),
+(7,  '2026-07-20', '11:37:08', 14, 2),
+(8,  '2026-07-20', '14:22:41', 19, 1),
+(9,  '2026-07-20', '10:05:19', 11, 1),
+(10, '2026-07-20', '16:48:03', 16, 3),
+(11, '2026-07-20', '09:52:37', 14, 1),
+(12, '2026-07-20', '17:11:24', 20, 1),
+(13, '2026-07-20', '13:29:56', 19, 2),
+(14, '2026-07-20', '12:03:14', 11, 1),
+(15, '2026-07-20', '15:44:39', 14, 1);
+
 ALTER TABLE produit_membre ADD COLUMN photo_offre VARCHAR(255) DEFAULT NULL;
 ALTER TABLE produit ADD COLUMN perime TINYINT(1) NOT NULL DEFAULT 0;
 
@@ -143,3 +155,5 @@ UPDATE `produit_membre` SET `photo_offre` = 'Salade_de_Fruits.jpeg' WHERE `id_pr
 UPDATE `produit_membre` SET `photo_offre` = 'Crêpe_au_Nutella.jpeg' WHERE `id_produit` = 14;
 
 UPDATE `produit_membre` SET `photo_offre` = 'Cookie.jpeg' WHERE `id_produit` = 15;
+
+
