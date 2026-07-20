@@ -34,7 +34,7 @@ foreach ($ventes as $vente) {
                     <li class="nav-item"><a class="nav-link" href="vendre.php"><i class="bi bi-shop"></i>Vendre</a></li>
                     <li class="nav-item"><a class="nav-link active" href="ventes.php"><i class="bi bi-graph-up-arrow"></i>Mes Ventes</a></li>
                     <li class="nav-item"><a class="nav-link " href="statistiques.php"><i class="bi bi-bar-chart-line"></i>Statistiques</a></li>
-
+                    <li class="nav-item"><a class="nav-link active" href="ajouter.php"><i class="bi bi-plus-circle"></i>Ajouter</a></li>
                 </ul>
                 <div class="navbar-text text-white me-3">
                     <i class="bi bi-person-circle"></i> Connecté : <strong><?= htmlspecialchars($_SESSION['nom']) ?></strong>

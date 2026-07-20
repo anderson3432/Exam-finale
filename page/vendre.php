@@ -16,30 +16,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_vendre'])) {
     $quantite = intval($_POST['quantite']);
     $date_dispo = $_POST['date_dispo'];
     $id_membre = $_SESSION['id_membre'];
-    
+
     $nom_photo = null;
 
-    // 🌟 TRAITEMENT DU TÉLÉVERSEMENT DE LA PHOTO 🌟
     if (isset($_FILES['photo_plat']) && $_FILES['photo_plat']['error'] === 0) {
         $dossier_destination = '../images/';
-        
+
         if (!is_dir($dossier_destination)) {
             mkdir($dossier_destination, 0777, true);
         }
 
         $extension = pathinfo($_FILES['photo_plat']['name'], PATHINFO_EXTENSION);
-        // Création d'un nom unique basé sur le timestamp pour éviter les écrasements
         $nom_photo = 'offre_' . time() . '_' . rand(1000, 9999) . '.' . $extension;
         $chemin_complet = $dossier_destination . $nom_photo;
 
         if (!move_uploaded_file($_FILES['photo_plat']['tmp_name'], $chemin_complet)) {
-            $nom_photo = null; 
+            $nom_photo = null;
         }
     }
 
     if ($id_produit > 0 && $prix_vente > 0 && $quantite > 0 && !empty($date_dispo)) {
         $insertion_reussie = mettre_en_vente($id_produit, $id_membre, $prix_vente, $quantite, $date_dispo, $nom_photo);
-        
+
         if ($insertion_reussie) {
             $message_succes = "Votre plat a bien été mis en vente avec sa photo !";
         } else {
@@ -55,6 +53,7 @@ $catalogue = get_all_lines($sql_catalogue);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,6 +62,7 @@ $catalogue = get_all_lines($sql_catalogue);
     <link rel="stylesheet" href="../Theme/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../Theme/bootstrap/font/bootstrap-icons.css">
 </head>
+
 <body class="bg-light">
 
     <nav class="navbar navbar-app navbar-expand-lg mb-4 shadow-sm">
@@ -74,6 +74,7 @@ $catalogue = get_all_lines($sql_catalogue);
                     <li class="nav-item"><a class="nav-link active" href="vendre.php"><i class="bi bi-shop"></i>Vendre</a></li>
                     <li class="nav-item"><a class="nav-link" href="ventes.php"><i class="bi bi-graph-up-arrow"></i>Mes Ventes</a></li>
                     <li class="nav-item"><a class="nav-link" href="statistiques.php"><i class="bi bi-bar-chart-line"></i>Statistiques</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="ajouter.php"><i class="bi bi-plus-circle"></i>Ajouter</a></li>
                 </ul>
                 <div class="navbar-text text-white me-3">
                     <i class="bi bi-person-circle"></i> Connecté : <strong><?= htmlspecialchars($_SESSION['nom']) ?></strong>
@@ -95,10 +96,10 @@ $catalogue = get_all_lines($sql_catalogue);
             <div class="col-md-6">
                 <div class="card card-app shadow-sm p-4">
                     <h3 class="fw-bold mb-3"><i class="bi bi-plus-circle"></i> Mettre un plat en vente</h3>
-                    
+
                     <form action="vendre.php" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="action_vendre" value="1">
-                        
+
                         <div class="mb-3">
                             <label for="id_produit" class="form-label fw-bold">Choisir le produit</label>
                             <select name="id_produit" id="id_produit" class="form-select" required>
@@ -138,4 +139,5 @@ $catalogue = get_all_lines($sql_catalogue);
         </div>
     </div>
 </body>
+
 </html>

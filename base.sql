@@ -110,3 +110,5 @@ INSERT INTO produit_membre (id_produit, id_membre, prix_vente, quantite_dispo, d
 (12, 10, 2000.00, 5, '2026-07-22');
 
 ALTER TABLE produit_membre ADD COLUMN photo_offre VARCHAR(255) DEFAULT NULL;
+
+ALTER TABLE produit ADD COLUMN perime TINYINT(1) NOT NULL DEFAULT 0;

@@ -15,16 +15,12 @@ if (isset($_GET['page'])) {
 if ($page == 'categories') {
     $titre = "Ventes par categorie";
     $lignes = get_ventes_par_categorie();
-}
-
-elseif ($page == 'produits') {
+} elseif ($page == 'produits') {
     $id_categorie = intval($_GET['id_categorie']);
     $categorie = get_categorie_by_id($id_categorie);
     $titre = "Ventes par produit - " . $categorie['nom_categorie'];
     $lignes = get_ventes_par_produit($id_categorie);
-}
-
-elseif ($page == 'membres') {
+} elseif ($page == 'membres') {
     $id_produit = intval($_GET['id_produit']);
     $produit = get_produit_by_id($id_produit);
     $titre = "Ventes par membre - " . $produit['nom'];
@@ -54,6 +50,7 @@ elseif ($page == 'membres') {
                     <li class="nav-item"><a class="nav-link" href="vendre.php"><i class="bi bi-shop"></i>Vendre</a></li>
                     <li class="nav-item"><a class="nav-link" href="ventes.php"><i class="bi bi-graph-up-arrow"></i>Mes Ventes</a></li>
                     <li class="nav-item"><a class="nav-link active" href="statistiques.php"><i class="bi bi-bar-chart-line"></i>Statistiques</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="ajouter.php"><i class="bi bi-plus-circle"></i>Ajouter</a></li>
                 </ul>
                 <div class="navbar-text text-white me-3">
                     <i class="bi bi-person-circle"></i> Connecté : <strong><?= htmlspecialchars($_SESSION['nom']) ?></strong>
