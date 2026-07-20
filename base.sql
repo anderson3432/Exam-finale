@@ -110,5 +110,36 @@ INSERT INTO produit_membre (id_produit, id_membre, prix_vente, quantite_dispo, d
 (12, 10, 2000.00, 5, '2026-07-22');
 
 ALTER TABLE produit_membre ADD COLUMN photo_offre VARCHAR(255) DEFAULT NULL;
-
 ALTER TABLE produit ADD COLUMN perime TINYINT(1) NOT NULL DEFAULT 0;
+
+
+UPDATE `produit_membre` SET `photo_offre` = 'minesao.jpeg' WHERE `id_produit` = 1;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Riz_Cantonnais.jpeg' WHERE `id_produit` = 2;
+
+
+UPDATE `produit_membre` SET `photo_offre` = 'misao_legumes.jpeg' WHERE `id_produit` = 3;
+
+UPDATE `produit_membre` SET `photo_offre` = 'burger.webp' WHERE `id_produit` = 4;
+
+UPDATE `produit_membre` SET `photo_offre` = 'jus_mangue.jpg' WHERE `id_produit` = 5;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Ice_Tea.jpeg' WHERE `id_produit` = 6;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Café_Glacé.jpeg' WHERE `id_produit` = 7;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Sambos_Boeuf.jpeg' WHERE `id_produit` = 8;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Nems_Poulet.jpeg' WHERE `id_produit` = 9;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Frites.jpeg' WHERE `id_produit` = 10;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Sandwich.jpeg' WHERE `id_produit` = 11;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Muffin.jpeg' WHERE `id_produit` = 12;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Salade_de_Fruits.jpeg' WHERE `id_produit` = 13;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Crêpe_au_Nutella.jpeg' WHERE `id_produit` = 14;
+
+UPDATE `produit_membre` SET `photo_offre` = 'Cookie.jpeg' WHERE `id_produit` = 15;
